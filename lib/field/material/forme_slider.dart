@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:forme/forme.dart';
 
 typedef FormeLabelRender = String Function(double value);
+typedef SliderComponentShapeBuilder = SliderComponentShape Function(
+    BuildContext context, double value);
 
 class FormeSlider extends FormeField<double> {
   FormeSlider({
@@ -41,6 +43,7 @@ class FormeSlider extends FormeField<double> {
     this.sliderThemeData,
     this.thumbColor,
     this.decoration,
+    this.shapeBuilder,
   }) : super.allFields(
           initialValue: initialValue ?? min,
           decorator: decorator ??
@@ -61,7 +64,9 @@ class FormeSlider extends FormeField<double> {
                     sliderThemeData ?? SliderTheme.of(state.context);
                 if (themeData.thumbShape == null) {
                   themeData = themeData.copyWith(
-                      thumbShape: CustomSliderThumbCircle(value: state.value));
+                      thumbShape:
+                          shapeBuilder?.call(state.context, state.value) ??
+                              CustomSliderThumbCircle(value: state.value));
                 }
                 return SliderTheme(
                   data: themeData,
@@ -122,6 +127,7 @@ class FormeSlider extends FormeField<double> {
   final double? secondaryTrackValue;
   final Color? secondaryActiveColor;
   final InputDecoration? decoration;
+  final SliderComponentShapeBuilder? shapeBuilder;
   @override
   FormeFieldState<double> createState() => _FormeSliderState();
 }

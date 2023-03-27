@@ -10,6 +10,9 @@ class FormRangeLabelRender {
   FormRangeLabelRender(this.startRender, this.endRender);
 }
 
+typedef RangeSliderThumbShapeBuilder = RangeSliderThumbShape Function(
+    BuildContext context, RangeValues values);
+
 class FormeRangeSlider extends FormeField<RangeValues> {
   FormeRangeSlider({
     super.key,
@@ -42,6 +45,7 @@ class FormeRangeSlider extends FormeField<RangeValues> {
     this.rangeLabelRender,
     this.semanticFormatterCallback,
     this.sliderThemeData,
+    this.shapeBuilder,
   }) : super.allFields(
             decorator: decorator ??
                 (decoration == null
@@ -71,7 +75,8 @@ class FormeRangeSlider extends FormeField<RangeValues> {
                         sliderThemeData ?? SliderTheme.of(state.context);
                     if (themeData.thumbShape == null) {
                       themeData = themeData.copyWith(
-                          rangeThumbShape:
+                          rangeThumbShape: shapeBuilder?.call(
+                                  state.context, state.value) ??
                               CustomRangeSliderThumbCircle(value: state.value));
                     }
                     return SliderTheme(
@@ -121,6 +126,7 @@ class FormeRangeSlider extends FormeField<RangeValues> {
   final Color? inactiveColor;
   final SliderThemeData? sliderThemeData;
   final FormRangeLabelRender? rangeLabelRender;
+  final RangeSliderThumbShapeBuilder? shapeBuilder;
   @override
   FormeFieldState<RangeValues> createState() => _FormeRangeSliderState();
 }
