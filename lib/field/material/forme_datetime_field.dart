@@ -133,6 +133,43 @@ class FormeDateTimeField extends FormeField<DateTime?> {
   final String? minuteLabelText;
   final String? timeErrorInvalidText;
   final Offset? timeAnchorPoint;
+
+  static Widget defaultTriggerBuilder(
+    FormeDateTimeFieldState state, {
+    InputDecoration? decoration,
+    String Function(DateTime? time)? formatter,
+    bool clearButton = true,
+  }) {
+    return InkWell(
+      focusNode: state.focusNode,
+      onTap: state.showPicker,
+      child: InputDecorator(
+        isFocused: state.hasFocus,
+        isEmpty: state.value == null,
+        decoration: (decoration ?? const InputDecoration()).copyWith(
+          errorText: state.errorText,
+          suffixIconConstraints:
+              !clearButton ? null : const BoxConstraints.tightFor(),
+          suffixIcon: !clearButton
+              ? null
+              : FormeFieldStatusListener<DateTime?>(
+                  builder: (context, status, child) {
+                    if (status != null && status.value != null) {
+                      return IconButton(
+                        onPressed: () {
+                          FormeField.of(context)!.value = null;
+                        },
+                        icon: const Icon(Icons.clear),
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
+        ),
+        child: Text(formatter?.call(state.value) ?? '${state.value ?? ''}'),
+      ),
+    );
+  }
 }
 
 class FormeDateTimeFieldState extends FormeFieldState<DateTime?> {

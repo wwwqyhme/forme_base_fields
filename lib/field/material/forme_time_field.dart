@@ -81,6 +81,43 @@ class FormeTimeField extends FormeField<TimeOfDay?> {
   final EntryModeChangeCallback? onEntryModeChanged;
   final Offset? anchorPoint;
   final FormeTimeTriggerBuilder triggerBuilder;
+
+  static Widget defaultTriggerBuilder(
+    FormeTimeFieldState state, {
+    InputDecoration? decoration,
+    String Function(TimeOfDay? time)? formatter,
+    bool clearButton = true,
+  }) {
+    return InkWell(
+      focusNode: state.focusNode,
+      onTap: state.showPicker,
+      child: InputDecorator(
+        isFocused: state.hasFocus,
+        isEmpty: state.value == null,
+        decoration: (decoration ?? const InputDecoration()).copyWith(
+          errorText: state.errorText,
+          suffixIconConstraints:
+              !clearButton ? null : const BoxConstraints.tightFor(),
+          suffixIcon: !clearButton
+              ? null
+              : FormeFieldStatusListener<TimeOfDay?>(
+                  builder: (context, status, child) {
+                    if (status != null && status.value != null) {
+                      return IconButton(
+                        onPressed: () {
+                          FormeField.of(context)!.value = null;
+                        },
+                        icon: const Icon(Icons.clear),
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
+        ),
+        child: Text(formatter?.call(state.value) ?? '${state.value ?? ''}'),
+      ),
+    );
+  }
 }
 
 class FormeTimeFieldState extends FormeFieldState<TimeOfDay?> {
