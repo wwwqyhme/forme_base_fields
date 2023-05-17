@@ -1,3 +1,7 @@
+# 3.0.1
+
+1. upgrade flutter to `3.10.0`
+
 # 3.0.0
 
 1. remove `FormeExpansionListTile`
