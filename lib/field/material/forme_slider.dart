@@ -65,7 +65,8 @@ class FormeSlider extends FormeField<double> {
                 if (themeData.thumbShape == null) {
                   themeData = themeData.copyWith(
                       thumbShape:
-                          shapeBuilder?.call(state.context, state.value));
+                          shapeBuilder?.call(state.context, state.value) ??
+                              CustomSliderThumbCircle(value: state.value));
                 }
                 return SliderTheme(
                   data: themeData,

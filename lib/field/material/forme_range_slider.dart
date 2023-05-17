@@ -75,8 +75,9 @@ class FormeRangeSlider extends FormeField<RangeValues> {
                         sliderThemeData ?? SliderTheme.of(state.context);
                     if (themeData.thumbShape == null) {
                       themeData = themeData.copyWith(
-                          rangeThumbShape:
-                              shapeBuilder?.call(state.context, state.value));
+                          rangeThumbShape: shapeBuilder?.call(
+                                  state.context, state.value) ??
+                              CustomRangeSliderThumbCircle(value: state.value));
                     }
                     return SliderTheme(
                       data: themeData,
