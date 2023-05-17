@@ -82,7 +82,7 @@ abstract class FormeCupertinoBasePickerState<T> extends FormeFieldState<T> {
         filter: widget.filter,
         barrierDismissible: widget.barrierDismissible ?? true,
         useRootNavigator: widget.useRootNavigator ?? true,
-        semanticsDismissible: widget.semanticsDismissible,
+        semanticsDismissible: widget.semanticsDismissible ?? false,
         routeSettings: widget.routeSettings,
         anchorPoint: widget.anchorPoint,
         builder: (context) {
